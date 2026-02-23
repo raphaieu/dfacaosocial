@@ -2,7 +2,7 @@ import Link from "next/link"
 import Image from "next/image"
 
 export default function WhatsAppButton() {
-    const phoneNumber = "5561987654321" // Update with real number
+    const phoneNumber = "5571981429124" // Update with real number
     const message = "Olá! Gostaria de saber mais sobre como posso ajudar a D.F. Ação Social."
     const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`
 

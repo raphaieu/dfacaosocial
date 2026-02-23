@@ -1,6 +1,6 @@
 # Nossa História
 
-Há mais de 11 anos, um grupo de amigas se uniu com um único propósito: transformar sorrisos.
+Há mais de 10 anos, um grupo de amigas se uniu com um único propósito: transformar sorrisos.
 Movidas por carinho profundo, amizade verdadeira e uma saudade que nos une eternamente, decidimos multiplicar nosso tempo modificando vidas. Assim nasceu a DF Ação Social.
 
 Na primeira ação, entregamos tanto amor que o dia pareceu pequeno demais para conter tanta emoção. Os olhares gratos e os abraços sinceros nos mostraram: ajudar é o maior presente que podemos receber.
@@ -28,3 +28,8 @@ Hoje, já tocamos a vida de milhares de pessoas. E nosso sonho continua: transfo
     Onde tem gente, existe DF Ação Social.
     Junte-se a nós.
     Juntos, o bem se multiplica sem limites.
+
+WhatsApp: +55 71 98142-9124 - Cris Freitas
+WhatsApp: +55 71 98859-9802 - Brisa Gisele
+
+Salvador - Bahia - Brasil

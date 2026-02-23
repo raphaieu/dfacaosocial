@@ -16,7 +16,7 @@ import { Heart, Users, Utensils } from "lucide-react"
 
 const slides = [
   {
-    title: "Transformando o futuro de famílias brasilienses",
+    title: "Transformando o futuro de famílias baianas",
     description: "Atuamos na linha de frente para levar dignidade e esperança para quem mais precisa.",
     image: "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=2070&auto=format&fit=crop",
     cta: "Saiba Mais",
@@ -32,7 +32,7 @@ const slides = [
   {
     title: "Juntos somos mais fortes",
     description: "Seja um voluntário e dedique um pouco do seu tempo para mudar uma realidade.",
-    image: "https://images.unsplash.com/photo-1559027615-cd9d7a9154ad?q=80&w=2070&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1761839256601-e768233e25e7?q=80&w=2070&auto=format&fit=crop",
     cta: "Ser Voluntário",
     link: "/contato"
   }

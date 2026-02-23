@@ -15,6 +15,8 @@ import {
 import { Home, LayoutDashboard, Users, Heart, Settings, LogOut } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
+import { createClient } from "@/lib/supabase/client"
+import { useRouter } from "next/navigation"
 
 const items = [
     {
@@ -40,12 +42,21 @@ const items = [
 ]
 
 export function AppSidebar() {
+    const supabase = createClient()
+    const router = useRouter()
+
+    const handleLogout = async () => {
+        await supabase.auth.signOut()
+        router.push("/")
+        router.refresh()
+    }
+
     return (
         <Sidebar collapsible="icon" className="border-r border-gray-200">
             <SidebarHeader className="py-6 flex items-center justify-center">
                 <Link href="/">
                     <Image
-                        src="/images/logo.svg"
+                        src="/images/logo-white.svg"
                         alt="Logo"
                         width={40}
                         height={40}
@@ -75,7 +86,10 @@ export function AppSidebar() {
             <SidebarFooter className="p-4 border-t border-gray-100">
                 <SidebarMenu>
                     <SidebarMenuItem>
-                        <SidebarMenuButton className="text-destructive hover:text-destructive hover:bg-destructive/10">
+                        <SidebarMenuButton
+                            onClick={handleLogout}
+                            className="cursor-pointer text-destructive hover:text-destructive hover:bg-destructive/10"
+                        >
                             <LogOut className="h-4 w-4" />
                             <span>Sair</span>
                         </SidebarMenuButton>
