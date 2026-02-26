@@ -125,3 +125,17 @@
     @apply bg-background text-foreground;
   }
 }
+
+[data-pix-display] {
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+[data-pix-display]:hover {
+  opacity: 0.8;
+  border-color: var(--primary) !important;
+}
+
+.campaign-content section {
+  margin-bottom: 2rem;
+}

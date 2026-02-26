@@ -12,7 +12,7 @@ import {
     SidebarGroupLabel,
     SidebarGroupContent,
 } from "@/components/ui/sidebar"
-import { Home, LayoutDashboard, Users, Heart, Settings, LogOut } from "lucide-react"
+import { Home, LayoutDashboard, Users, Heart, Settings, LogOut, FileText } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
 import { createClient } from "@/lib/supabase/client"
@@ -30,13 +30,18 @@ const items = [
         icon: Heart,
     },
     {
+        title: "Transparência",
+        url: "/admin/transparencia",
+        icon: FileText,
+    },
+    {
         title: "Voluntários",
         url: "/admin/voluntarios",
         icon: Users,
     },
     {
         title: "Configurações",
-        url: "/admin/settings",
+        url: "/admin/configuracoes",
         icon: Settings,
     },
 ]

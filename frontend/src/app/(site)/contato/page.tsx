@@ -26,7 +26,7 @@ const formSchema = z.object({
     email: z.string().email({ message: 'E-mail inválido.' }),
     phone: z.string().min(10, { message: 'Telefone inválido.' }),
     message: z.string().min(5, { message: 'A mensagem deve ter pelo menos 5 caracteres.' }),
-    isVolunteer: z.boolean(),
+    is_volunteer: z.boolean(),
 })
 
 type ContactFormValues = z.infer<typeof formSchema>
@@ -42,18 +42,34 @@ export default function ContactPage() {
             email: '',
             phone: '',
             message: '',
-            isVolunteer: false,
+            is_volunteer: false,
         },
     })
 
     async function onSubmit(values: ContactFormValues) {
         setSubmitting(true)
-        // Simulate API call
-        console.log('Form values:', values)
-        await new Promise((resolve) => setTimeout(resolve, 1500))
-        setSubmitting(false)
-        setSuccess(true)
-        form.reset()
+        try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/contacts`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(values),
+            })
+
+            if (response.ok) {
+                setSuccess(true)
+                form.reset()
+            } else {
+                console.error('Error submitting form:', await response.text())
+                alert('Erro ao enviar mensagem. Tente novamente mais tarde.')
+            }
+        } catch (error) {
+            console.error('Error submitting form:', error)
+            alert('Erro de conexão. Verifique sua internet.')
+        } finally {
+            setSubmitting(false)
+        }
     }
 
     return (
@@ -236,7 +252,7 @@ export default function ContactPage() {
 
                                         <FormField
                                             control={form.control}
-                                            name="isVolunteer"
+                                            name="is_volunteer"
                                             render={({ field }) => (
                                                 <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-2xl border p-4 bg-primary/10 border-primary/20">
                                                     <FormControl>

@@ -12,7 +12,9 @@ import {
 } from "@/components/ui/carousel"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Heart, Users, Utensils } from "lucide-react"
+import { Heart, Users, Utensils, Calendar, ArrowRight, Loader2 } from "lucide-react"
+import { useState, useEffect, useMemo } from "react"
+import { cn } from "@/lib/utils"
 
 const slides = [
   {
@@ -38,31 +40,35 @@ const slides = [
   }
 ]
 
-const recentCampaigns = [
-  {
-    title: "Natal sem Fome 2024",
-    excerpt: "Meta de arrecadar 500 cestas básicas para a comunidade do Sol Nascente.",
-    image: "https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?q=80&w=2070&auto=format&fit=crop",
-    tag: "Ativa",
-    date: "20 Fev, 2026"
-  },
-  {
-    title: "Ação de Volta às Aulas",
-    excerpt: "Distribuição de kits escolares para crianças em situação de vulnerabilidade.",
-    image: "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=2070&auto=format&fit=crop",
-    tag: "Concluída",
-    date: "10 Jan, 2026"
-  },
-  {
-    title: "Sopa Comunitária",
-    excerpt: "Ação semanal de distribuição de refeições quentes para pessoas em situação de rua.",
-    image: "https://images.unsplash.com/photo-1531206715517-5c0ba140b2b8?q=80&w=2070&auto=format&fit=crop",
-    tag: "Recorrente",
-    date: "Toda Sexta"
-  }
-]
-
 export default function HomePage() {
+  const [actions, setActions] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const fetchActions = async () => {
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/campaigns`)
+        if (response.ok) {
+          const data = await response.json()
+          setActions(data)
+        }
+      } catch (error) {
+        console.error('Error fetching actions:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchActions()
+  }, [])
+
+  const featuredActions = useMemo(() => {
+    return actions
+      .filter(a => Boolean(a.featured))
+      .sort((a, b) => new Date(b.published_at).getTime() - new Date(a.published_at).getTime())
+      .slice(0, 3)
+  }, [actions])
+
   return (
     <div className="flex flex-col w-full">
       {/* Hero Carousel */}
@@ -143,39 +149,53 @@ export default function HomePage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {recentCampaigns.map((camp, i) => (
-              <Card key={i} className="overflow-hidden border-none shadow-lg hover:shadow-xl transition-shadow group">
-                <div className="relative h-56 overflow-hidden">
-                  <Image
-                    src={camp.image}
-                    alt={camp.title}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className="absolute top-4 right-4">
-                    <Badge variant={camp.tag === "Ativa" ? "default" : "secondary"} className={cn(
-                      camp.tag === "Ativa" ? "bg-[#25D366] text-white" : "bg-gray-200 text-gray-700"
-                    )}>
-                      {camp.tag}
-                    </Badge>
-                  </div>
-                </div>
-                <CardHeader>
-                  <div className="text-xs text-gray-400 mb-2">{camp.date}</div>
-                  <CardTitle className="font-outfit group-hover:text-primary transition-colors">{camp.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-600 text-sm line-clamp-3">
-                    {camp.excerpt}
-                  </p>
-                </CardContent>
-                <CardFooter>
-                  <Button variant="link" className="p-0 text-black font-bold group-hover:translate-x-1 transition-transform" asChild>
-                    <Link href={`/acoes/${i}`}>LER MAIS →</Link>
-                  </Button>
-                </CardFooter>
-              </Card>
-            ))}
+            {loading ? (
+              <div className="col-span-full flex flex-col items-center justify-center py-20">
+                <Loader2 className="h-10 w-10 animate-spin text-primary mb-4" />
+                <p className="text-gray-400 font-bold uppercase tracking-widest text-[10px] animate-pulse">Buscando destaques...</p>
+              </div>
+            ) : featuredActions.length === 0 ? (
+              <div className="col-span-full py-20 bg-white rounded-[32px] border border-dashed text-center">
+                <p className="text-gray-400 font-medium italic">Nenhuma campanha em destaque no momento.</p>
+              </div>
+            ) : (
+              featuredActions.map((action) => (
+                <Link key={action.id} href={`/acoes/${action.slug}`}>
+                  <Card className="group overflow-hidden border-none shadow-lg hover:shadow-2xl transition-all duration-300 rounded-[32px] h-full bg-white flex flex-col">
+                    <div className="relative h-64 overflow-hidden">
+                      <Image
+                        src={action.thumbnail || 'https://images.unsplash.com/photo-1543599553-294715494d40?q=80&w=800'}
+                        alt={action.title}
+                        fill
+                        className="object-cover transition-transform duration-700 group-hover:scale-110"
+                      />
+                      <div className="absolute top-4 left-4">
+                        <span className="bg-primary text-black text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full shadow-lg">
+                          {action.category}
+                        </span>
+                      </div>
+                    </div>
+                    <CardHeader className="p-6">
+                      <div className="flex items-center gap-2 text-gray-400 text-xs font-bold uppercase tracking-widest mb-2">
+                        <Calendar className="h-3.5 w-3.5" />
+                        {action.published_at ? new Date(action.published_at).toLocaleDateString('pt-BR', { year: 'numeric', month: 'long', day: 'numeric' }) : 'Data indisponível'}
+                      </div>
+                      <CardTitle className="text-xl font-black uppercase italic tracking-tight group-hover:text-primary transition-colors">
+                        {action.title}
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="px-6 pb-6 mt-auto flex flex-col">
+                      <p className="text-gray-500 text-sm line-clamp-2 mb-6 font-medium italic h-10">
+                        {action.excerpt || 'Sem resumo disponível.'}
+                      </p>
+                      <div className="flex items-center gap-2 text-black font-black uppercase tracking-[0.2em] text-[10px] italic">
+                        Ver Detalhes <ArrowRight className="h-3 w-3 group-hover:translate-x-1 transition-transform" />
+                      </div>
+                    </CardContent>
+                  </Card>
+                </Link>
+              ))
+            )}
           </div>
         </div>
       </section>
@@ -202,8 +222,4 @@ export default function HomePage() {
       </section>
     </div>
   )
-}
-
-function cn(...inputs: any[]) {
-  return inputs.filter(Boolean).join(" ")
 }
