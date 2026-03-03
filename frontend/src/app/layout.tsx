@@ -16,6 +16,16 @@ const inter = Inter({
 export const metadata: Metadata = {
     title: "D.F. Ação Social - Transformando Vidas",
     description: "D.F. Ação Social - Organização não governamental dedicada a ajudar famílias em situação de vulnerabilidade.",
+    openGraph: {
+        images: [
+            {
+                url: "/og-image.jpg",
+                width: 1200,
+                height: 630,
+                alt: "D.F. Ação Social",
+            },
+        ],
+    },
 };
 
 export default function RootLayout({

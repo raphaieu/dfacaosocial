@@ -20,6 +20,7 @@ import {
 } from '@/components/ui/form'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import Link from 'next/link'
+import PartnersCarousel from "@/components/PartnersCarousel";
 
 const formSchema = z.object({
     name: z.string().min(2, { message: 'Nome deve ter pelo menos 2 caracteres.' }),
@@ -298,6 +299,7 @@ export default function ContactPage() {
                     </div>
                 </div>
             </section>
+            <PartnersCarousel />
         </div>
     )
 }

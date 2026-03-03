@@ -1,11 +1,15 @@
 'use client'
 
+import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Heart, Target, Eye, ShieldCheck, Play } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import PartnersCarousel from "@/components/PartnersCarousel";
 
 export default function AboutPage() {
+    const [showVideo, setShowVideo] = useState(false)
+
     return (
         <div className="pt-14 md:pt-16">
             {/* Hero Section */}
@@ -48,15 +52,29 @@ export default function AboutPage() {
                             </p>
                         </div>
 
-                        {/* Video Placeholder */}
+                        {/* Video Section */}
                         <div className="mt-12 relative aspect-video bg-gray-100 rounded-2xl overflow-hidden flex items-center justify-center group cursor-pointer border-4 border-primary">
-                            <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors"></div>
-                            <Button size="icon" className="w-20 h-20 rounded-full bg-primary text-black hover:scale-110 transition-transform relative z-10">
-                                <Play className="h-10 w-10 fill-current" />
-                            </Button>
-                            <p className="absolute bottom-6 text-white font-bold uppercase tracking-widest z-10 flex items-center gap-2">
-                                <span className="w-8 h-px bg-white"></span> Assista Nossa Trajetória
-                            </p>
+                            {!showVideo ? (
+                                <div
+                                    className="absolute inset-0 flex items-center justify-center"
+                                    onClick={() => setShowVideo(true)}
+                                >
+                                    <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors"></div>
+                                    <Button size="icon" className="w-20 h-20 rounded-full bg-primary text-black hover:scale-110 transition-transform relative z-10">
+                                        <Play className="h-10 w-10 fill-current" />
+                                    </Button>
+                                    <p className="absolute bottom-6 text-white font-bold uppercase tracking-widest z-10 flex items-center gap-2">
+                                        <span className="w-8 h-px bg-white"></span> Assista Nossa Trajetória
+                                    </p>
+                                </div>
+                            ) : (
+                                <video
+                                    src="https://api.dfacaosocial.ong.br/video.mp4"
+                                    controls
+                                    autoPlay
+                                    className="w-full h-full object-cover"
+                                />
+                            )}
                         </div>
                     </div>
                 </div>
@@ -159,20 +177,19 @@ export default function AboutPage() {
                         Conselho de Idealizadores
                     </h2>
 
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-5xl mx-auto">
+                    <div className="grid grid-cols-2 gap-8 max-w-5xl mx-auto">
                         {[
-                            { name: "Cris Freitas", role: "Idealizadora" },
-                            { name: "Brisa Gisele", role: "Idealizadora" },
-                            { name: "Idealizadora 3", role: "Idealizadora" },
-                            { name: "Idealizadora 4", role: "Idealizadora" },
+                            { name: "Cris Freitas", role: "Fundadora", image: "/images/fundadora.jpg" },
+                            { name: "Brisa Gisele", role: "Co-Fundadora", image: "/images/co-fundadora.jpg" },
                         ].map((member, i) => (
-                            <div key={i} className="group">
+                            <div key={i} className="group text-center">
                                 <div className="aspect-[4/5] bg-gray-100 rounded-3xl mb-4 overflow-hidden relative border-4 border-transparent group-hover:border-primary transition-all">
-                                    {/* Placeholder for real photo */}
-                                    <div className="absolute inset-0 flex items-center justify-center text-gray-300">
-                                        <Heart className="h-12 w-12 opacity-20" />
-                                    </div>
-                                    {/* i === 0 && <Image src="/images/conselho/cris.jpg" alt={member.name} fill className="object-cover" /> */}
+                                    <Image
+                                        src={member.image}
+                                        alt={member.name}
+                                        fill
+                                        className="object-cover group-hover:scale-105 transition-transform duration-500"
+                                    />
                                 </div>
                                 <h3 className="font-bold text-lg uppercase tracking-tight">{member.name}</h3>
                                 <p className="text-sm text-gray-400 font-bold uppercase tracking-widest">{member.role}</p>
@@ -181,6 +198,7 @@ export default function AboutPage() {
                     </div>
                 </div>
             </section>
+            <PartnersCarousel />
         </div>
     )
 }

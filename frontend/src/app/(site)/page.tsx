@@ -10,6 +10,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel"
+import PartnersCarousel from "@/components/PartnersCarousel";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Heart, Users, Utensils, Calendar, ArrowRight, Loader2 } from "lucide-react"
@@ -143,7 +144,7 @@ export default function HomePage() {
                 Acompanhe nossas últimas iniciativas e veja como você pode ajudar a transformar a realidade de quem precisa.
               </p>
             </div>
-            <Button asChild variant="outline" className="border-primary text-black font-bold">
+            <Button asChild className="bg-black text-white hover:bg-primary hover:text-black font-bold px-8 transition-colors">
               <Link href="/acoes">VER TODAS AS AÇÕES</Link>
             </Button>
           </div>
@@ -199,6 +200,8 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      <PartnersCarousel />
 
       {/* Call to Action */}
       <section className="py-24 bg-black text-white relative overflow-hidden">
